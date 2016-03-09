@@ -1,0 +1,1 @@
+You can chuck any "low level" code that calls AWS SDK into this gem that might be useful in more than one gem/module.
