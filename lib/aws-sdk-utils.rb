@@ -1,0 +1,2 @@
+require_relative 'cloudformation_converger'
+require_relative 'lambda_alias_switcher'
