@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+require 'trollop'
+require 'cfndsl_converger'
+require 'yaml'
+
+opts = Trollop::options do
+  opt :path_to_stack, '', type: :string, required: true
+  opt :stack_name, '', type: :string, required: true
+  opt :path_to_yaml, '', type: :string, required: false
+end
+
+bindings = opts[:path_to_yaml].nil? ? nil : YAML.load_file(opts[:path_to_yaml])
+
+outputs = CfndslConverger.new.converge(stack_name: opts[:stack_name],
+                                       path_to_stack: opts[:path_to_stack],
+                                       bindings: bindings)
+
+puts outputs.to_yaml

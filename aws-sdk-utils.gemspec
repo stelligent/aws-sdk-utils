@@ -5,6 +5,7 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
   s.version       = '0.0.0'
   s.bindir        = 'bin'
+  s.executables   = %w(cfndsl_converge yaml_get)
   s.authors       = %w(someguy)
   s.summary       = 'aws-sdk-utils'
   s.description   = 'Low level utilities for dealing with AWS SDK'
@@ -17,5 +18,5 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency('aws-sdk', '2.2.17')
   s.add_runtime_dependency('cfndsl', '0.4.0')
-
+  s.add_runtime_dependency('trollop', '2.1.2')
 end

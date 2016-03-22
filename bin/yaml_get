@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require 'yaml'
+
+yaml_file = ARGV[0]
+key = ARGV[1]
+
+yaml = YAML.load_file(yaml_file)
+puts yaml[key]
