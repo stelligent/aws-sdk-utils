@@ -16,4 +16,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.1.0'
 
   s.add_runtime_dependency('aws-sdk', '2.2.17')
+  s.add_runtime_dependency('cfndsl', '0.4.0')
+
 end

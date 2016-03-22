@@ -3,8 +3,7 @@ require 'aws-sdk'
 class CloudFormationConverger
 
   def converge(stack_name:,
-               stack_path:,
-               parameters:nil)
+               stack_path:)
 
     cloudformation_client = Aws::CloudFormation::Client.new
     resource = Aws::CloudFormation::Resource.new(client: cloudformation_client)
