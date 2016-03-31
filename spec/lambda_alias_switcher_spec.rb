@@ -53,7 +53,6 @@ describe LambdaAliasSwitcher do
 
       list_aliases_response = Aws::Lambda::Client.new.list_aliases function_name: stack_outputs['functionname']
 
-      puts list_aliases_response
       expect(list_aliases_response.aliases.size).to eq 1
     end
 
