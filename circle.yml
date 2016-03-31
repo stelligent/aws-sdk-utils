@@ -7,7 +7,7 @@ deployment:
 test:
   override:
     - bundle exec rspec:
-      timeout: 1200
+        timeout: 1200
 
 machine:
   ruby:
