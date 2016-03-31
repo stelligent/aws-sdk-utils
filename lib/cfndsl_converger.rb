@@ -98,7 +98,7 @@ class CfndslConverger
       stack.stack_status =~ /COMPLETE/ or stack.stack_status =~ /FAILED/
     end
 
-    if stack.stack_status =~ /FAILED/
+    if stack.stack_status =~ /FAILED/ or stack.stack_status == 'ROLLBACK_COMPLETE'
       raise "#{stack_name} failed to converge: #{stack.stack_status}"
     end
 
