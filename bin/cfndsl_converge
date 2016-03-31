@@ -12,9 +12,14 @@ end
 
 bindings = opts[:path_to_yaml].nil? ? nil : YAML.load_file(opts[:path_to_yaml])
 
-outputs = CfndslConverger.new.converge(stack_name: opts[:stack_name],
-                                       path_to_stack: opts[:path_to_stack],
-                                       bindings: bindings,
-                                       fail_on_changes_to_immutable_resource: opts[:fail_on_changes_to_immutable_resource])
+begin
+  outputs = CfndslConverger.new.converge(stack_name: opts[:stack_name],
+                                         path_to_stack: opts[:path_to_stack],
+                                         bindings: bindings,
+                                         fail_on_changes_to_immutable_resource: opts[:fail_on_changes_to_immutable_resource])
 
-puts outputs.to_yaml
+  puts outputs.to_yaml
+rescue Exception => e
+  puts e.message
+  exit 1
+end

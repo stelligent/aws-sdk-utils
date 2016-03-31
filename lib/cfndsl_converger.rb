@@ -35,7 +35,7 @@ class CfndslConverger
                                           extras,
                                           verbose)
 
-    if fail_on_changes_to_immutable_resource
+    if fail_on_changes_to_immutable_resource and stack_exists?(stack_name)
       unsafe_logical_resource_id = ChangesetUtil.new.immutable_resources_that_would_change stack_name: stack_name,
                                                                                            template_body: model.to_json
       if unsafe_logical_resource_id.nil?
@@ -70,12 +70,18 @@ class CfndslConverger
 
   private
 
+  def stack_exists?(stack_name)
+    cloudformation_client = Aws::CloudFormation::Client.new
+    resource = Aws::CloudFormation::Resource.new(client: cloudformation_client)
+    resource.stacks.find {|stack| stack.name == stack_name }
+  end
+
   def converge_stack(stack_name:,
                      stack_body:)
 
     cloudformation_client = Aws::CloudFormation::Client.new
     resource = Aws::CloudFormation::Resource.new(client: cloudformation_client)
-    if resource.stacks.find {|stack| stack.name == stack_name }
+    if stack_exists?(stack_name)
       stack = resource.stack(stack_name)
       begin
         stack.update(template_body: stack_body,
