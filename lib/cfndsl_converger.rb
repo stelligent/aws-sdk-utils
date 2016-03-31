@@ -1,6 +1,7 @@
 require 'aws-sdk'
 require 'cfndsl'
 require 'tempfile'
+require 'changeset_util'
 
 class CfndslConverger
 
@@ -18,7 +19,8 @@ class CfndslConverger
 
   def converge(stack_name:,
                path_to_stack:,
-               bindings: nil)
+               bindings: nil,
+               fail_on_changes_to_immutable_resource: false)
     extras = []
     unless bindings.nil?
       temp_file = Tempfile.new('cfnstackfortesting')
@@ -33,8 +35,19 @@ class CfndslConverger
                                           extras,
                                           verbose)
 
-    outputs = converge_stack stack_name: stack_name,
-                             stack_body: model.to_json
+    if fail_on_changes_to_immutable_resource
+      unsafe_logical_resource_id = ChangesetUtil.new.immutable_resources_that_would_change stack_name: stack_name,
+                                                                                           template_body: model.to_json
+      if unsafe_logical_resource_id.nil?
+        outputs = converge_stack stack_name: stack_name,
+                                 stack_body: model.to_json
+      else
+        raise "update would modify or delete immutable resource #{unsafe_logical_resource_id}"
+      end
+    else
+      outputs = converge_stack stack_name: stack_name,
+                               stack_body: model.to_json
+    end
     outputs
   end
 

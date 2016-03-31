@@ -7,12 +7,14 @@ opts = Trollop::options do
   opt :path_to_stack, '', type: :string, required: true
   opt :stack_name, '', type: :string, required: true
   opt :path_to_yaml, '', type: :string, required: false
+  opt :fail_on_changes_to_immutable_resource, '', type: :boolean, default: false, required: false
 end
 
 bindings = opts[:path_to_yaml].nil? ? nil : YAML.load_file(opts[:path_to_yaml])
 
 outputs = CfndslConverger.new.converge(stack_name: opts[:stack_name],
                                        path_to_stack: opts[:path_to_stack],
-                                       bindings: bindings)
+                                       bindings: bindings,
+                                       fail_on_changes_to_immutable_resource: opts[:fail_on_changes_to_immutable_resource])
 
 puts outputs.to_yaml
