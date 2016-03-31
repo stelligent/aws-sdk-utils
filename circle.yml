@@ -4,7 +4,10 @@ deployment:
     commands:
       - ./publish.sh
 
-
+test:
+  override:
+    timeout: 1200
+    
 machine:
   ruby:
     version: '2.2.1'
