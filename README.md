@@ -13,7 +13,7 @@ Additionally, this util has an option to force a failure if a call to UpdateStac
 any changes to resources marked as "immutable".
 
 ### Immutability
-The way this feature works is that the AWS API to create a "change set" is called before calling UpdateStack.
+The way this feature works is to use the AWS API to create a "change set" is called before calling UpdateStack.
 
 If any resources are returned in the changeset and that resource has a tag `immutable=true` then the
 convergence will fail.  Currently, the resource is parsed right out of the JSON of the Clouformation template
