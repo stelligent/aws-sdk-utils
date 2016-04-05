@@ -12,7 +12,7 @@ class CfndslConverger
     cfndsl_stacks.each do |cfndsl_stack|
       previous_output_bindings = converge stack_name: cfndsl_stack[:stack_name],
                                           path_to_stack: cfndsl_stack[:path_to_stack],
-                                          bindings: previous_output_bindings
+                                          bindings: previous_output_bindings.merge(input_bindings)
     end
     previous_output_bindings
   end

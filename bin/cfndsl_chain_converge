@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+require 'trollop'
+require 'cfndsl_converger'
+require 'yaml'
+
+opts = Trollop::options do
+  opt :path_to_stacks, '', type: :strings, required: true
+  opt :stack_names, '', type: :strings, required: true
+  opt :path_to_yaml, '', type: :string, required: false
+end
+
+Trollop::die :stack_names, 'path-to-stacks and stack-names need to line up in parallel' unless opts[:path_to_stacks].length == opts[:stack_names].length
+
+bindings = opts[:path_to_yaml].nil? ? nil : YAML.load_file(opts[:path_to_yaml])
+
+begin
+  cfndsl_stacks = []
+  opts[:path_to_stacks].each_with_index do |path_to_stack, index|
+    cfndsl_stacks << {
+      stack_name: opts[:stack_names][index],
+      path_to_stack: path_to_stack
+    }
+  end
+
+  outputs = CfndslConverger.new.chain_converge(cfndsl_stacks: cfndsl_stacks,
+                                               input_bindings: bindings)
+
+  puts outputs.to_yaml
+rescue Exception => e
+  puts e.message
+  exit 1
+end
+
