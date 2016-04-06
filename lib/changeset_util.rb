@@ -43,6 +43,7 @@ class ChangesetUtil
 
     describe_change_set_response = describe_change_set change_set_id: change_set_id
 
+    STDERR.puts describe_change_set_response.changes
     describe_change_set_response.changes.select { |change| %w(Modify Remove).include? change.resource_change.action }
   end
 
