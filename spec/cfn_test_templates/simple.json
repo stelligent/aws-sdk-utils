@@ -1,0 +1,16 @@
+{
+  "Parameters" : {
+    "BucketName" : {
+      "Type" : "String"
+    }
+  },
+
+  "Resources" : {
+    "vanilla" : {
+      "Type" : "AWS::S3::Bucket",
+      "Properties" : {
+        "BucketName" : { "Ref" : "BucketName" }
+      }
+    }
+  }
+}

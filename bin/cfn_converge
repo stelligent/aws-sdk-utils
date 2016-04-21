@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+require 'trollop'
+require 'cloudformation_converger'
+require 'yaml'
+
+opts = Trollop::options do
+  opt :path_to_stack, '', type: :string, required: true
+  opt :stack_name, '', type: :string, required: true
+  opt :path_to_yaml, '', type: :string, required: false
+end
+
+bindings = opts[:path_to_yaml].nil? ? nil : YAML.load_file(opts[:path_to_yaml])
+
+begin
+  outputs = CloudFormationConverger.new.converge(stack_name: opts[:stack_name],
+                                                 stack_path: opts[:path_to_stack],
+                                                 bindings: bindings)
+
+  puts outputs.to_yaml
+rescue Exception => e
+  puts e.message
+  exit 1
+end
