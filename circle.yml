@@ -6,7 +6,7 @@ deployment:
 
 test:
   override:
-    - bundle exec rspec:
+    - bundle exec rspec --tag @bleargh:
         timeout: 1200
 
 machine:
