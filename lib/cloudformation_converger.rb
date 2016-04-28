@@ -5,14 +5,19 @@ class CloudFormationConverger
 
   def converge(stack_name:,
                stack_path:,
-               bindings: nil)
+               bindings: nil,
+               strip_extras: false)
+
+    cloudformation_client = Aws::CloudFormation::Client.new
+
+    validate_template_response = cloudformation_client.validate_template(template_body: IO.read(stack_path))
+    legal_parameters = validate_template_response.parameters.map { | parameter| parameter.parameter_key }
 
     parameters = []
     unless bindings.nil?
-      parameters = convert_hash_to_parameters bindings
+      parameters = convert_hash_to_parameters bindings, legal_parameters, strip_extras
     end
 
-    cloudformation_client = Aws::CloudFormation::Client.new
     resource = Aws::CloudFormation::Resource.new(client: cloudformation_client)
     if resource.stacks.find {|stack| stack.name == stack_name }
       stack = resource.stack(stack_name)
@@ -51,14 +56,26 @@ class CloudFormationConverger
 
   private
 
-  def convert_hash_to_parameters(hash)
+  def convert_hash_to_parameters(hash,
+                                 legal_parameters,
+                                 strip_extras)
     parameters = []
     hash.each do |k,v|
-      parameters << {
-        parameter_key: k,
-        parameter_value: v,
-        use_previous_value: false
-      }
+      if strip_extras
+        if legal_parameters.include? k
+          parameters << {
+            parameter_key: k,
+            parameter_value: v,
+            use_previous_value: false
+          }
+        end
+      else
+        parameters << {
+          parameter_key: k,
+          parameter_value: v,
+          use_previous_value: false
+        }
+      end
     end
     parameters
   end
