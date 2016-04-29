@@ -88,7 +88,7 @@ class CfndslConverger
                      capabilities: %w(CAPABILITY_IAM))
       rescue Exception => error
         if error.to_s =~ /No updates are to be performed/
-          puts 'no updates necessary'
+          STDERR.puts 'no updates necessary'
         else
           raise error
         end
