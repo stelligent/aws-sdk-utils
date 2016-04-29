@@ -20,6 +20,6 @@ begin
 
   puts outputs.to_yaml
 rescue Exception => e
-  puts e.message
+  STDERR.puts e.message
   exit 1
 end
