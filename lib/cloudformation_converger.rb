@@ -65,14 +65,14 @@ class CloudFormationConverger
         if legal_parameters.include? k
           parameters << {
             parameter_key: k,
-            parameter_value: v,
+            parameter_value: v.inspect,
             use_previous_value: false
           }
         end
       else
         parameters << {
           parameter_key: k,
-          parameter_value: v,
+          parameter_value: v.inspect,
           use_previous_value: false
         }
       end
