@@ -3,6 +3,26 @@ require 'yaml'
 
 class CloudFormationConverger
 
+  def chain_converge(cloudformation_stacks:,
+                     input_bindings: nil,
+                     strip_extras: false)
+
+    all_output_bindings = []
+    previous_output_bindings = input_bindings
+    cloudformation_stacks.each do |cloudformation_stack|
+      previous_output_bindings = converge stack_name: cloudformation_stack[:stack_name],
+                                          stack_path: cloudformation_stack[:path_to_stack],
+                                          bindings: previous_output_bindings,
+                                          strip_extras: strip_extras
+      all_output_bindings << previous_output_bindings
+    end
+    all_output_bindings.inject({}) do |merged_output_bindings, per_stack_output_binding|
+      merged_output_bindings.merge(per_stack_output_binding) do |key, oldval, newval|
+        STDERR.puts "duplicate value for #{key}: #{oldval} and #{newval}"
+      end
+    end
+  end
+
   def converge(stack_name:,
                stack_path:,
                bindings: nil,
