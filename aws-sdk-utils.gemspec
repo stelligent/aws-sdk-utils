@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
   s.version       = '0.0.0'
   s.bindir        = 'bin'
-  s.executables   = %w(cfndsl_converge yaml_get cfndsl_chain_converge cfn_converge)
+  s.executables   = %w(cfndsl_converge yaml_get cfndsl_chain_converge cfn_converge cfn_chain_converge)
   s.authors       = %w(someguy)
   s.summary       = 'aws-sdk-utils'
   s.description   = 'Low level utilities for dealing with AWS SDK'
