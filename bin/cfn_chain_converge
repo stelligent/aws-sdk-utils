@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'trollop'
-require 'cfndsl_converger'
+require 'cloudformation_converger'
 require 'yaml'
 
 opts = Trollop::options do
