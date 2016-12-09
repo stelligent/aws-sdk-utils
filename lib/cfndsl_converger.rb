@@ -23,7 +23,7 @@ class CfndslConverger
                fail_on_changes_to_immutable_resource: false)
     extras = []
     unless bindings.nil?
-      temp_file = Tempfile.new('cfnstackfortesting')
+      temp_file = Tempfile.new('cfnstackfortesting', '.yml')
       temp_file.write bindings.to_yaml
       temp_file.close
 
