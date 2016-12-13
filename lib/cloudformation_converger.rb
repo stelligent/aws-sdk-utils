@@ -60,7 +60,7 @@ class CloudFormationConverger
                                     parameters: parameters)
     end
 
-    stack.wait_until(max_attempts:200, delay:15) do |stack|
+    stack.wait_until(max_attempts:360, delay:15) do |stack|
       stack.stack_status =~ /COMPLETE/ or stack.stack_status =~ /FAILED/
     end
 
