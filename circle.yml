@@ -4,10 +4,10 @@ deployment:
     commands:
       - ./publish.sh
 
-test:
-  override:
-    - bundle exec rspec --tag @bleargh:
-        timeout: 1200
+#test:
+#  override:
+#    - bundle exec rspec --tag @bleargh:
+#        timeout: 1200
 
 machine:
   ruby:

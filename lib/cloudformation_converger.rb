@@ -48,6 +48,7 @@ class CloudFormationConverger
       rescue Exception => error
         if error.to_s =~ /No updates are to be performed/
           STDERR.puts 'no updates necessary'
+          return stack_outputs_hash(stack) if stack.status =~ /COMPLETE/
         else
           raise error
         end
@@ -68,10 +69,7 @@ class CloudFormationConverger
       raise "#{stack_name} failed to converge: #{stack.stack_status}"
     end
 
-    stack.outputs.inject({}) do |hash, output|
-      hash[output.output_key] = output.output_value
-      hash
-    end
+    stack_outputs_hash(stack)
   end
 
   private
@@ -98,5 +96,12 @@ class CloudFormationConverger
       end
     end
     parameters
+  end
+
+  def stack_outputs_hash(stack)
+    stack.outputs.inject({}) do |hash, output|
+      hash[output.output_key] = output.output_value
+      hash
+    end
   end
 end
