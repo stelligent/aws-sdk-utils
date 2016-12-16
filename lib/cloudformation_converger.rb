@@ -48,7 +48,7 @@ class CloudFormationConverger
       rescue Exception => error
         if error.to_s =~ /No updates are to be performed/
           STDERR.puts 'no updates necessary'
-          return stack_outputs_hash(stack) if stack.status =~ /COMPLETE/
+          return stack_outputs_hash(stack) if stack.stack_status =~ /COMPLETE/
         else
           raise error
         end
